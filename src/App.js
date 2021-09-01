@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+
+import './App.scss';
+
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import allReducers from './reducers';
+
+import AppHeader from './components/header';
+import AppWrapper from './components/appWrapper';
+
+const global_store = createStore(
+  allReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 function App() {
-  return (
+  return (<Provider store={global_store}>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AppHeader />
+      <AppWrapper />
     </div>
-  );
+  </Provider>);
 }
 
 export default App;
