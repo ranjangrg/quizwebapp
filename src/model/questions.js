@@ -70,6 +70,9 @@ class Questions {
 		this.maxId = this._getQuestionsMaxId();
 		this.minId = this._getQuestionsMinId();
 	};
+	getQuestionIds = () => {
+		return this.questionList.map(q => q.id);
+	};
 	getQuestionList = () => this.questionList;
 	getQuestion = (questionIdx) => {
 		if (questionIdx < this.minId) {

@@ -23,7 +23,7 @@ export default function AppWrapper() {
 			/>
 		</Box>
 		<Box component="div" m={1}>
-			<QuizSubmissionBar />
+			<QuizSubmissionBar qList={qList} />
 		</Box>
 	</>);
 }
