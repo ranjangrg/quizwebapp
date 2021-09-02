@@ -19,6 +19,7 @@ function QuizSubmissionBar(props) {
 	const classes = useStyles();
 	const qIds = props.qList.getQuestionIds();
 	const selections = useSelector(state => Object.keys(state.selections));
+	const flaggedQs = useSelector(state => state.flaggedQuestions);
 	const [openSubmissionWarning , setOpenSubmissionWarning] = React.useState(false);
 	const [alertMessage, setAlertMessage] = React.useState("No error");
 	const [alertType, setAlertType] = React.useState("warning");
@@ -32,18 +33,47 @@ function QuizSubmissionBar(props) {
 		});
 		return missedQIds;
 	};
+	const checkFlagged = () => {
+		let hasFlagged = false;
+		let _flaggedQs = [];
+		for (const [qIdx, flagValue] of Object.entries(flaggedQs)) {
+			hasFlagged = flagValue;
+			if (hasFlagged) {
+				_flaggedQs.push(qIdx);
+				//break;
+			}
+		}
+		return {hasFlagged: hasFlagged, flagged: _flaggedQs};
+	};
 	const checkSubmission = () => {
 		let allAnswered = false;
 		let missedQIds = getUnansweredQuestions();
 		if (missedQIds.length === 0) {
 			allAnswered = true;
 		}
-		return {allAnswered: allAnswered, missedQIds: missedQIds};
+		const checkFlaggedResult = checkFlagged();
+		return {
+			allAnswered: allAnswered, 
+			missedQIds: missedQIds,
+			hasFlagged: checkFlaggedResult.hasFlagged,
+			flagged: checkFlaggedResult.flagged
+		};
 	};
 	const submitQuiz = () => {
-		const {allAnswered, missedQIds} = checkSubmission();
+		const {allAnswered, missedQIds, hasFlagged, flagged} = checkSubmission();
 		let msg = "";
-		if (allAnswered) {
+		if (hasFlagged) {
+			// continue submission process OR maybe final confirmation
+			msg = (<>
+				Flagged questions
+				<h2> {flagged.join(',')} </h2>
+				<Button> Submit anyway </Button>
+				</>);
+			setAlertType("warning");
+			setAlertTitle("Warning");
+			setAlertMessage(msg);
+			setOpenSubmissionWarning(true);
+		} else if (allAnswered) {
 			// continue submission process OR maybe final confirmation
 			msg = (<>
 				You answered all the questions.
@@ -59,6 +89,7 @@ function QuizSubmissionBar(props) {
 			msg = (<>
 				Following questions not answered: <br /> 
 				<h2> {missedQIds.join(',')} </h2>
+				<Button> Submit anyway </Button>
 			</>);
 			setAlertType("warning");
 			setAlertTitle("Warning");
