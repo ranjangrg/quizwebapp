@@ -61,12 +61,12 @@ const invalid_question = {
 
 class Questions {
 	constructor(data_src) {
+		this.update();
+	}
+	update = (newSrc = '') => {
 		// ideally fectch this data from somewhere 
 		// (DON'T use 'sample_questions')
 		this.questionList = sample_questions;
-		this.update();
-	}
-	update = () => {
 		this.maxId = this._getQuestionsMaxId();
 		this.minId = this._getQuestionsMinId();
 	};

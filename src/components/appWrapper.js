@@ -16,11 +16,7 @@ export default function AppWrapper() {
 	return (<>
 		<AppQuestionCard qList={qList}/>
 		<Box component="div" m={1}>
-			<QuestionNav 
-				minId={qList.getMinId()}
-				maxId={qList.getMaxId()}
-				qList={qList}
-			/>
+			<QuestionNav qList={qList} />
 		</Box>
 		<Box component="div" m={1}>
 			<QuizSubmissionBar qList={qList} />

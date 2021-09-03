@@ -31,7 +31,8 @@ const useStyles = makeStyles( (theme) => ({
 function QuestionNav(props) {
 	const classes = useStyles();
 	const qList = props.qList;
-	const [minId, maxId] = [props.minId, props.maxId];
+	// const [minId, maxId] = [props.minId, props.maxId];
+	const [minId, maxId] = [qList.getMinId(), qList.getMaxId()];
 	const currentQuestionIdx = useSelector(state => state.currentQuestionIdx);
 	const flaggedQuestions = useSelector(state => state.flaggedQuestions);
 	const dispatch = useDispatch();
