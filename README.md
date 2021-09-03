@@ -22,7 +22,7 @@ Main dependencies includes `React`, `react-redux`, `redux`, `@material-ui`.
 
 ## Usage
 
-### Imports
+### Imports
 Components to be imported `AppQuestionCard`, `QuestionNav` and `QuizSubmissionBar`. <br />
 Questions data-model to be imported `<path>/model/questions.js`.
 ```jsx
