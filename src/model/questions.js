@@ -1,3 +1,5 @@
+
+
 const sample_questions = [
 	{
 		id: 1,
@@ -60,58 +62,82 @@ const invalid_question = {
 };
 
 class Questions {
-	constructor(data_src) {
-		this.update();
+	constructor() {
+		this.dataLoaded = false;
 	}
-	update = (newSrc = '') => {
-		// ideally fectch this data from somewhere 
-		// (DON'T use 'sample_questions')
-		this.questionList = sample_questions;
-		this.maxId = this._getQuestionsMaxId();
-		this.minId = this._getQuestionsMinId();
+	isLoaded = () => {
+		return this.dataLoadedPromise;
+	}
+	loadData = (newSrc) => {
+		this.dataLoaded = false;
+		this.dataLoadedPromise = fetch(newSrc)
+			.then(response => response.json())
+			.then(responseJSON => {
+				this.questionList = responseJSON.data;
+				this.dataLoaded = true;
+				this.maxId = this._getQuestionsMaxId();
+				this.minId = this._getQuestionsMinId();
+				console.log("[ SUCCESS ] Data loaded");
+			});
+	};
+	init = () => {
+		const newSrc = "http://localhost:5000/data";
+		this.loadData(newSrc);
 	};
 	getQuestionIds = () => {
-		return this.questionList.map(q => q.id);
+		if (this.dataLoaded) { 
+			return this.questionList.map(q => q.id);
+		}
 	};
-	getQuestionList = () => this.questionList;
-	getQuestion = (questionIdx) => {
-		if (questionIdx < this.minId) {
-			return this._getQuestionsMin();
-		}
-		if (questionIdx > this.maxId) {
-			return this._getQuestionsMax();
-		}
-		const question = this.questionList.find( q => q.id === questionIdx );
-		if (question) {
-			return question;
-		} else {
-			return invalid_question;
-		}
-		// note: to catch invalid question idx, see below for ideas
-		// if (questionIdx < this.minId || questionIdx > this.maxId) {
-		// 	return invalid_question;
-		// 	//throw new Error("Question does not exist!");
-		// }
+	getQuestionList = () => {
+		if (this.dataLoaded) { return this.questionList; }
 	}
-	getMinId() { return this.minId; }
-	getMaxId() { return this.maxId; }
+	getQuestion = (questionIdx) => {
+		if (this.dataLoaded) { 
+			if (questionIdx < this.minId) {
+				return this._getQuestionsMin();
+			}
+			if (questionIdx > this.maxId) {
+				return this._getQuestionsMax();
+			}
+			const question = this.questionList.find( q => q.id === questionIdx );
+			if (question) {
+				return question;
+			} else {
+				return invalid_question;
+			}
+			// note: to catch invalid question idx, see below for ideas
+			// if (questionIdx < this.minId || questionIdx > this.maxId) {
+			// 	return invalid_question;
+			// 	//throw new Error("Question does not exist!");
+		// }
+		}
+	}
+	getMinId() { if (this.dataLoaded) { return this.minId; } }
+	getMaxId() { if (this.dataLoaded) { return this.maxId; } }
 
 	// internal methods/functions
 	_getQuestionsMax = () => {
-		return this.questionList.reduce( (q1, q2) => 
-			q1.id > q2.id ? q1 : q2
-		);
+		if (this.dataLoaded) { 
+			return this.questionList.reduce( (q1, q2) => 
+				q1.id > q2.id ? q1 : q2 );
+		}
 	};
 	_getQuestionsMaxId = () => {
-		return this._getQuestionsMax().id;
+		if (this.dataLoaded) { 
+			return this._getQuestionsMax().id;
+		};
 	};
 	_getQuestionsMin = () => {
-		return this.questionList.reduce( (q1, q2) => 
-			q1.id < q2.id ? q1 : q2
-		);
+		if (this.dataLoaded) { 
+			return this.questionList.reduce( (q1, q2) => 
+				q1.id < q2.id ? q1 : q2 );
+		}
 	};
 	_getQuestionsMinId = () => {
-		return this._getQuestionsMin().id;
+		if (this.dataLoaded) {
+			return this._getQuestionsMin().id;
+		}
 	};
 }
 
