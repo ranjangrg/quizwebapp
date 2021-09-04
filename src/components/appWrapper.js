@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 
 import Questions from '../model/questions';
 
@@ -26,13 +27,11 @@ class AppWrapper extends React.Component {
 		this.qList.init();
 		this.qList.isLoaded()
 			.then( (loaded) => {
-				console.log("[ SUCCESS ] qList loaded");
 				this.setState({
 					dataLoaded: true
 				});
 			})
-			.catch((err) => console.log("[ ERR ]", err))
-		console.log("AppWrapper mounted now!");
+			.catch((err) => console.err("[ ERR ]", err))
 	}
 
 	render() {
@@ -49,43 +48,20 @@ class AppWrapper extends React.Component {
 		} else {
 			return (<> 
 				<Box component="div" m={1}>
-				<Card>
-					<CardContent>
-						<CircularProgress size={40} variant="indeterminate" /> 
-						<br />
-						Loading questions ...
-					</CardContent>
-				</Card>
+					<Card>
+						<CardContent>
+							<Typography component="div" align="center"> 
+								<CircularProgress size={40} variant="indeterminate" /> 
+							</Typography> 
+							<Typography component="div" align="center"> 
+								Loading questions ...
+							</Typography> 
+						</CardContent>
+					</Card>
 				</Box>
 			</>);
 		}
 	}
 }
-
-// export default function AppWrapper() {
-// 	let qList = new Questions();
-// 	const [dataLoaded, updateLoadingStatus] = useState(true);
-
-// 	useEffect( () => {
-// 		qList.init('NO_SRC');
-// 		updateLoadingStatus(qList.dataLoaded);
-// 		console.log("AppWrapper mounted now!");
-// 	}, [qList]);
-
-// 	if (!dataLoaded) {
-// 		return (<div> Loading data ... </div>);
-// 	} else if (dataLoaded) {
-// 		return (<>
-// 			<AppQuestionCard qList={qList}/>
-// 			<Box component="div" m={1}>
-// 				<QuestionNav qList={qList} />
-// 			</Box>
-// 			<Box component="div" m={1}>
-// 				<QuizSubmissionBar qList={qList} />
-// 			</Box> 
-// 		</>);
-// 	}
-// }
-
 
 export default AppWrapper;

@@ -77,11 +77,10 @@ class Questions {
 				this.dataLoaded = true;
 				this.maxId = this._getQuestionsMaxId();
 				this.minId = this._getQuestionsMinId();
-				console.log("[ SUCCESS ] Data loaded");
 			});
 	};
 	init = () => {
-		const newSrc = "http://localhost:5000/data";
+		const newSrc = "http://localhost:5000/datadelayed";
 		this.loadData(newSrc);
 	};
 	getQuestionIds = () => {

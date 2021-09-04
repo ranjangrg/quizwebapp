@@ -64,8 +64,12 @@ app.use( (req, res, next) => {
 	next();
 } );
 
-app.get('/data', (req, res) => {
+app.get('/datadelayed', (req, res) => {
 	setTimeout(() => {
 		res.json({data: testJSON});
-	}, 2000);
+	}, 4000);
+});
+
+app.get('/data', (req, res) => {
+	res.json({data: testJSON});
 });
