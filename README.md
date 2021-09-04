@@ -22,6 +22,13 @@ Main dependencies includes `React`, `react-redux`, `redux`, `@material-ui`.
 
 ## Usage
 
+### `npm` stuffs (for devs)
+```bash
+$ npm start;	# for main app (localhost:3000)
+$ npm run dataserver;	# for sample data API (localhost:5000)
+$ npm run devonly	# for main app + sample data API (using *nix '&')
+```
+
 ### Imports
 Components to be imported `AppQuestionCard`, `QuestionNav` and `QuizSubmissionBar`. <br />
 Questions data-model to be imported `<path>/model/questions.js`.
